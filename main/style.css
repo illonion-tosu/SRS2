@@ -1,0 +1,16 @@
+/* Fonts */
+@font-face {
+    font-family: "Bubble Candy";
+    font-weight: 400;
+    src: url("../fonts/BubbleCandy-Regular.otf")
+}
+
+/* Whole Page */
+.main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    background-image: url("static/background.png");
+}
