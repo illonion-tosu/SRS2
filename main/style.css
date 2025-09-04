@@ -14,3 +14,20 @@
     height: 1080px;
     background-image: url("static/background.png");
 }
+
+/* Team Name */
+.team-name {
+    position: absolute;
+    top: 20px;
+    font-family: "Bubble Candy";
+    font-size: 4.5em;
+    letter-spacing: -1px;
+}
+.team-name-left {
+    left: 80px;
+    color: #FF6A66;
+}
+.team-name-right { 
+    right: 105px;
+    color: #9cce00;
+}
