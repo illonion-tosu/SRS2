@@ -1,3 +1,8 @@
+/* Variables */
+:root {
+    --star-container-horizontal-alignment: 134px;
+}
+
 /* Fonts */
 @font-face {
     font-family: "Bubble Candy";
@@ -31,3 +36,13 @@
     right: 105px;
     color: #9cce00;
 }
+
+/* Star Container */
+.star-container {
+    position: absolute;
+    top: 95px;
+    display: flex;
+    gap: 22px;
+}
+.star-container-left { left: var(--star-container-horizontal-alignment); }
+.star-container-right { right: var(--star-container-horizontal-alignment); }
