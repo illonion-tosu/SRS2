@@ -3,6 +3,8 @@
     --star-container-horizontal-alignment: 134px;
     --color-left: #FF6A66;
     --color-right: #9cce00;
+    --now-playing-metadata-horizontal-alignment: 16px;
+    --current-score-horizontal-alignment: 1150px;
 }
 
 /* Fonts */
@@ -48,6 +50,10 @@
 }
 .star-container-left { left: var(--star-container-horizontal-alignment); }
 .star-container-right { right: var(--star-container-horizontal-alignment); }
+.star {
+    width: 43px;
+    height: 41px;
+}
 
 /* Now Playing */
 .now-playing {
@@ -70,43 +76,76 @@
     background-size: cover;
     background-position: center;
 }
-/* Song Title + Difficulty */
-.now-playing-title-difficulty {
+/* Metadata */
+.now-playing-metadata {
     position: absolute;
-    top: 57px;
-    left: 16px;
+    left: var(--now-playing-metadata-horizontal-alignment);
     font-family: "Fredoka";
     font-weight: 600;
     width: 375px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 1.4em;
     color: var(--color-left);
+}
+/* Song Title + Difficulty */
+.now-playing-title-difficulty {
+    position: absolute;
+    top: 57px;
+    font-size: 1.4em;
 }
 .now-playing-artist {
     position: absolute;
     top: 82px;
-    left: 16px;
-    font-family: "Fredoka";
-    font-weight: 500;
-    width: 375px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     font-size: 1.15em;
-    color: var(--color-left);
 }
 .now-playing-stats-container {
     position: absolute;
     top: 104px;
-    left: 16px;
+    left: var(--now-playing-metadata-horizontal-alignment);
     font-family: "Fredoka";
     font-weight: 500;
     font-size: 1.05em;
     display: flex;
     flex-wrap: wrap;
+    font-variant-numeric: tabular-nums;
 }
-.now-playing-stat {
-    width: 112px;
+.now-playing-stat { width: 112px; }
+
+/* Current Score */
+.current-score {
+    position: absolute;
+    font-family: "Fredoka";
+    font-weight: 700;
+    bottom: 115px;
+    font-variant-numeric: tabular-nums;
+    font-size: 4em;
+}
+.current-score-left { right: var(--current-score-horizontal-alignment); }
+.current-score-right { left: var(--current-score-horizontal-alignment); }
+/* Scorebar */
+.scorebar-line {
+    position: absolute;
+    bottom: 151px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 10px;
+    background-color: #DB9E67;
+}
+.scorebar-star {
+    position: absolute;
+    bottom: 135px;
+    left: 960px;
+    transform: translateX(-50%);
+}
+/* Scorebar */
+.current-score-difference {
+    position: absolute;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Fredoka";
+    font-weight: 600;
+    font-size: 2.5em;
 }
