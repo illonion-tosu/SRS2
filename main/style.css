@@ -113,6 +113,10 @@
 .now-playing-stat { width: 112px; }
 
 /* Current Score */
+.score {
+    opacity: 1;
+    transition: 500ms ease-in-out;
+}
 .current-score {
     position: absolute;
     font-family: "Fredoka";
@@ -144,6 +148,7 @@
     bottom: 135px;
     left: 960px;
     transform: translateX(-50%);
+    transition: 200ms ease-in-out;
 }
 /* Scorebar */
 .current-score-difference {
@@ -168,6 +173,8 @@
     border-radius: 25px;
     font-family: "Fredoka";
     font-weight: 500;
+    opacity: 1;
+    transition: 500ms ease-in-out;
 }
 /* Messages Container */
 .messages-container {

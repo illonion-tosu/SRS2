@@ -34,6 +34,20 @@ const scoreEl = document.getElementById("score")
 const chatDisplayEl = document.getElementById("chat-display")
 let scoreVisibility
 
+// Current score
+const currentScoreLeftEl = document.getElementById("current-score-left")
+const currentScoreRightEl = document.getElementById("current-score-right")
+const currentScoreDifferenceEl = document.getElementById("current-score-difference")
+// Animations
+const animation = {
+    "currentScoreLeft": new CountUp(currentScoreLeftEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "."}),
+    "currentScoreRight": new CountUp(currentScoreRightEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "."}),
+    "currentScoreDifference": new CountUp(currentScoreDifferenceEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: "."}), 
+}
+
+// Scorebar
+const scorebarStarEl = document.getElementById("scorebar-star")
+
 // Spclet
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
@@ -90,14 +104,59 @@ socket.onmessage = event => {
     }
 
     // Score visibility
+    console.log(scoreVisibility)
     if (scoreVisibility !== data.tourney.scoreVisible) {
-        scoreVisibility = data.tourney.scoreVisibible
+        scoreVisibility = data.tourney.scoreVisible
         if (scoreVisibility) {
             scoreEl.style.opacity = 1
-            chatDisplayEl.style.opacity = 1
-        } else {
-            scoreEl.style.opacity = 1
             chatDisplayEl.style.opacity = 0
+        } else {
+            scoreEl.style.opacity = 0
+            chatDisplayEl.style.opacity = 1
+        }
+    }
+
+    // Display Score
+    if (scoreVisibility) {
+        let currentLeftScore = 0, currentRightScore = 0, currentScoreDifference = 0
+
+        for (let i = 0; i < data.tourney.clients.length; i++) {
+            let currentScore = data.tourney.clients[i].play.score
+            
+            // EZ Multiplier
+            const currentMods = getMods(data.tourney.clients[i].play.mods.number)
+            if (currentMappoolBeatmap && currentMappoolBeatmap.mod === "FM" && currentMods.includes("EZ")) {
+                currentScore *= 1.75
+            }
+
+            // Add to client
+            if (i % 2 === 0) {
+                currentLeftScore += currentScore
+            } else {
+                currentRightScore += currentScore
+            }
+        }
+
+        currentScoreDifference = Math.abs(currentRightScore - currentLeftScore)
+        // Animate
+        animation.currentScoreLeft.update(currentLeftScore)
+        animation.currentScoreRight.update(currentRightScore)
+        animation.currentScoreDifference.update(currentScoreDifference)
+
+        // Set position of star
+        const scoreDifferencePercent = Math.min(currentScoreDifference / 1000000, 1)
+        const scoreDifferencePosition = Math.min(Math.pow(scoreDifferencePercent, 0.5) * 150, 150)
+
+        // Scorebar
+        if (currentLeftScore > currentRightScore) {
+            scorebarStarEl.style.left = `${960 - scoreDifferencePosition}px`
+            scorebarStarEl.setAttribute("src", `static/stars/left-star-full.png`)
+        } else if (currentRightScore > currentLeftScore) {
+            scorebarStarEl.style.left = `${960 + scoreDifferencePosition}px`
+            scorebarStarEl.setAttribute("src", `static/stars/right-star-full.png`)
+        } else if (currentRightScore === currentLeftScore) {
+            scorebarStarEl.style.left = `960px`
+            scorebarStarEl.setAttribute("src", `static/stars/middle-star-full.png`)
         }
     }
 }
