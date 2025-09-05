@@ -1,5 +1,6 @@
 /* Variables */
 :root {
+    --team-name-horizontal-alignment: 105px;
     --star-container-horizontal-alignment: 134px;
     --color-left: #FF6A66;
     --color-right: #9cce00;
@@ -33,11 +34,11 @@
     letter-spacing: -1px;
 }
 .team-name-left {
-    left: 80px;
+    left: var(--team-name-horizontal-alignment);
     color: var(--color-left);
 }
 .team-name-right { 
-    right: 105px;
+    right: var(--team-name-horizontal-alignment);
     color: var(--color-right);
 }
 
