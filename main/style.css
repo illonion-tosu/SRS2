@@ -182,7 +182,8 @@
 }
 .message-name {
     font-weight: 700;
-    width: 210px;
+    width: max-content;
+    max-width: 210px;
 }
 .message-content {
     width: 440px;
