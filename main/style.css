@@ -195,13 +195,14 @@
 }
 .message-name {
     font-weight: 700;
+    min-width: 100px;
     width: max-content;
     max-width: 210px;
 }
 .message-content {
     width: 440px;
 }
-.bot { color: yellow; }
-.unknown { color: lightblue; }
+.bot { color: darkmagenta; }
+.unknown { color: darkblue; }
 .left { color: #FC2F44; }
-.right { color: var(--color-right); }
+.right { color: darkgreen; }
