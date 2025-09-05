@@ -29,6 +29,11 @@ const nowPlayingArEl = document.getElementById("now-playing-ar")
 const nowPlayingHpEl = document.getElementById("now-playing-hp")
 const nowPlayingLenEl = document.getElementById("now-playing-len")
 
+// Score Visibility
+const scoreEl = document.getElementById("score")
+const chatDisplayEl = document.getElementById("chat-display")
+let scoreVisibility
+
 // Spclet
 const socket = createTosuWsSocket()
 socket.onmessage = event => {
@@ -82,6 +87,18 @@ socket.onmessage = event => {
         nowPlayingArEl.textContent = data.beatmap.stats.ar.converted
         nowPlayingHpEl.textContent = data.beatmap.stats.hp.converted
         nowPlayingLenEl.textContent = setLengthDisplay(Math.round((data.beatmap.time.lastObject - data.beatmap.time.firstObject) / 1000))
+    }
+
+    // Score visibility
+    if (scoreVisibility !== data.tourney.scoreVisible) {
+        scoreVisibility = data.tourney.scoreVisibible
+        if (scoreVisibility) {
+            scoreEl.style.opacity = 1
+            chatDisplayEl.style.opacity = 1
+        } else {
+            scoreEl.style.opacity = 1
+            chatDisplayEl.style.opacity = 0
+        }
     }
 }
 

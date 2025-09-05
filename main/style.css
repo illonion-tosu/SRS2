@@ -121,8 +121,14 @@
     font-variant-numeric: tabular-nums;
     font-size: 4em;
 }
-.current-score-left { right: var(--current-score-horizontal-alignment); }
-.current-score-right { left: var(--current-score-horizontal-alignment); }
+.current-score-left { 
+    right: var(--current-score-horizontal-alignment);
+    color: var(--color-left);
+}
+.current-score-right { 
+    left: var(--current-score-horizontal-alignment);
+    color: var(--color-right);
+}
 /* Scorebar */
 .scorebar-line {
     position: absolute;
