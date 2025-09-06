@@ -27,7 +27,7 @@ async function getBeatmaps() {
         let responseJson = await response.json()
         responseJson[0].mod = allBeatmaps[i].mod
         responseJson[0].order = allBeatmaps[i].order
-        if (allBeatmaps[i].mod === "FM" || allBeatmaps[i].mod === "TB") responseJson[0].EZMultiplier = allBeatmaps[i].EZMultiplier
+        if (allBeatmaps[i].mod === "BS") responseJson[0].second_mod = allBeatmaps[i].second_mod
         
         allBeatmapsJson.push(responseJson[0])
     }
