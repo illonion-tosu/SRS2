@@ -14,14 +14,28 @@
     background-image: url("static/background.png");
 }
 
+/* Logo */
+.logo {
+    position: absolute;
+    left: 45px;
+    top: 36px;
+}
+/* Top Line */
+.top-line {
+    position: absolute;
+    top: -62px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 /* Round Name */
 .round-name {
     position: absolute;
-    top: 34px;
-    right: 30px;
-    font-size: 30px;
-    letter-spacing: 3px;
-    color: white;
+    top: 108px;
+    left: 290px;
+    transform: translateX(-50%);
+    font-size: 34px;
+    font-family: "Fredoka";
+    font-weight: 600;
 }
 
 /* Border */
