@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gameplay</title>
+
+    <link rel="stylesheet" href="../_shared/shared.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main">
+        <!-- Round Name -->
+        <div class="round-name" id="round-name">Round of 16</div>
+
+        <!-- Team Section -->
+        <div class="team-section left-team-section">
+            <div class="team-section-overlay left-team-section-overlay"></div>
+            <img class="banner left-team-banner" src="static/green banner.png">
+            <div class="team-name" id="left-team-name">Long Team Name Hello Its</div>
+            <div class="team-horizointal-rule left-team-horizontal-rule"></div>
+            <div class="team-star-container left-team-star-container" id="left-team-star-container"></div>
+            <img class="team-ban-image" src="static/green ban.png">
+            <div class="team-ban-container" id="left-team-ban-container"></div>
+            <div class="team-pick-container left-team-pick-container" id="left-team-pick-container"></div>
+        </div>
+        <div class="team-section right-team-section">
+            <div class="team-section-overlay right-team-section-overlay"></div>
+            <img class="banner right-team-banner" src="static/blue banner.png">
+            <div class="team-name" id="right-team-name">Long Team Name Hello Its</div>
+            <div class="team-horizointal-rule right-team-horizontal-rule"></div>
+            <div class="team-star-container right-team-star-container" id="right-team-star-container"></div>
+            <img class="team-ban-image" src="static/blue ban.png">
+            <div class="team-ban-container" id="right-team-ban-container"></div>
+            <div class="team-pick-container right-team-pick-container" id="right-team-pick-container"></div>
+        </div>
+
+        <!-- Borders -->
+        <div class="border top-border"></div>
+        <div class="border middle-border"></div>
+        <div class="border bottom-border"></div>
+
+        <!-- Chat Display -->
+        <div class="chat-display">
+            <div class="chat-display-background"></div>
+            <div class="chat-display-wrapper" id="chat-display-wrapper"></div>
+        </div>
+
+        <!-- Logo animation -->
+        <video autoplay loop muted>
+            <source src="static/logoanimation.webm">
+        </video>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <section class="column column-1">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Star Control</div>
+                <div class="sidebar-button-container">
+                    <button onclick="updateStarCount('red','minus')">Red --</button>
+                    <button onclick="updateStarCount('red','plus')">Red ++</button>
+                    <button onclick="updateStarCount('blue','minus')">Blue --</button>
+                    <button onclick="updateStarCount('blue','plus')">Blue ++</button>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-title">Mappool</div>
+                <div class="sidebar-text">
+                    Left Click (LC) = Red Pick<br>
+                    Right Click (RC) = Blue Pick<br>
+                    Ctrl + LC = Red Ban<br>
+                    Ctrl + RC = Blue Ban
+                 </div>
+                <div class="sidebar-button-container" id="sidebar-mappool-container"></div>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-title">Next Picker</div>
+                <div class="sidebar-text" id="next-auto-picker-team"></div>
+                <div class="sidebar-button-container">
+                    <button onclick="updateNextAutoPicker('red')">Left</button>
+                    <button onclick="updateNextAutoPicker('blue')">Right</button>
+                    <button onclick="toggleAutopick()" class="full-length-button" id="toggle-autopick">Toggle Autopick: OFF</button>
+                </div>
+            </div>
+        </section>
+        <div class="divider"></div>
+        <section class="column column-2">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Set Star Status</div>
+                <div class="sidebar-button-container">
+                    <button onclick="toggleStars()" class="full-length-button"  id="toggle-stars">Toggle Stars: ON</button>
+                </div>
+            </div>
+            <div class="sidebar-section" id="mappool-management-system">
+                <div class="sidebar-title">Mappool Management System</div>
+                <div class="sidebar-text">
+                    Only to be used in case<br>things go wrong!
+                </div>
+                <select class="sidebar-select" id="mappool-management-set-action" size="6" onchange="mappoolManagementSetAction()">
+                    <option value="setBan">Set Ban</option>
+                    <option value="removeBan">Remove Ban</option>
+                    <option value="setPick">Set Pick</option>
+                    <option value="removePick">Remove Pick</option>
+                    <option value="setWinner">Set Winner</option>
+                    <option value="removeWinner">Remove Winner</option>
+                </select>
+            </div>
+        </section>
+    </div>
+
+    <img class="preload-images" id="preload-images" src="">
+
+    <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
+    <script src="../_shared/utils.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
