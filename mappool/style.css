@@ -1,3 +1,11 @@
+/* Fonts */
+@font-face {
+    font-family: "Bubble Candy";
+    font-weight: 400;
+    src: url("../fonts/BubbleCandy-Regular.otf")
+}
+
+/* Variables */
 :root {
     --ban-colour: #ff8888;
     --green: #c3ff88;
@@ -5,6 +13,7 @@
     --banner-horizontal-alignment: 500px;
 }
 
+/* Whole Page */
 .main {
     position: absolute;
     left: 0;
@@ -12,6 +21,12 @@
     width: 1920px;
     height: 1080px;
     background-image: url("static/background.png");
+}
+
+/* Underneath Layers */
+.red-section {
+    position: absolute;
+    top: -22px;
 }
 
 /* Logo */
@@ -38,51 +53,23 @@
     font-weight: 600;
 }
 
-/* Border */
-.border {
-    position: absolute;
-    width: 1920px;
-    height: 0px;
-    border: 3px solid #fff5d5;
-}
-.top-border { top: 100px; }
-.middle-border { top: 481px; }
-.bottom-border { top: 856px; }
-
 /* Team Section */
 .team-section {
     position: absolute;
-    
     width: 1920px;
-    height: 380px;
+    height: 346px;
+    background-color: rgba(0, 0, 0, 0.5);
 }
-.left-team-section { top: 100px; }
-.right-team-section { top: 481px; }
-
-/* Team Section Overlay */
-.team-section-overlay {
-    opacity: 0.502;
-    width: 100%;
-    height: 100%;
-}
-.left-team-section-overlay { background-image: linear-gradient(180deg, #c3ff87 0%, #295741 100%); }
-.right-team-section-overlay { background-image: linear-gradient(180deg, #4967dd 0%, #b9ddff 100%); }
-
-/* Banner */
-.banner {
-    position: absolute;
-    left: 25px;
-    top: 6px;
-}
+.left-team-section { top: 195px; }
+.right-team-section { top: 536px; }
 
 /* Team Name */
 .team-name {
     position: absolute;
-    top: 22px;
-    left: 167px;
-    width: 400px;
-    font-size: 70px;
-    line-height: 72px;
+    top: 32px;
+    left: 75px;
+    width: 490px;
+    font-size: 56px;
     color: #ffffff;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -90,23 +77,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
     overflow-wrap: anywhere;
+    font-family: "Bubble Candy";
+    line-height: 50px;
 }
-
-/* Team Horizontal Rule */
-.team-horizointal-rule {
-    position: absolute;
-    top: 180px;
-    width: 1920px;
-    height: 48px;
-}
-.left-team-horizontal-rule { background-color: #3e815f; }
-.right-team-horizontal-rule { background-color: #b9ddff; }
+#left-team-name { color: #FB6769; }
+#right-team-name { color: #9DCD33; }
 
 /* Team Star Container */
 .team-star-container {
     position: absolute;
-    top: 184px;
-    left: 168px;
+    top: 146px;
+    left: 90px;
     display: flex;
     gap: 20px;
 }
@@ -128,11 +109,11 @@
 .no-left-star { background-color: var(--green); }
 .no-right-star { background-color: var(--blue); }
 
-/* Team Ban Image */
-.team-ban-image {
+/* Team Line */
+.team-line {
     position: absolute;
-    top: 280px;
-    left: 100px;
+    left: 81px;
+    top: 200px;
 }
 
 /* Team Ban Container */

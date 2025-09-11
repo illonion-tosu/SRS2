@@ -19,11 +19,11 @@ async function getBeatmaps() {
     roundNameEl.innerText = responseJson.roundName
 
     switch (responseJson.roundName) {
-        case "Round of 32": case "Round of 16":
+        case "ROUND OF 32": case "ROUND OF 16":
             currentBestOf = 9; break;
-        case "Quarterfinals": case "Semifinals":
+        case "QUARTERFINALS": case "SEMIFINALS":
             currentBestOf = 11; break;
-        case "Finals": case "Grand Finals":
+        case "FINALS": case "GRAND FINALS":
             currentBestOf = 13; break;
     }
     currentFirstTo = Math.ceil(currentBestOf / 2)
@@ -165,28 +165,22 @@ function createStarDisplay() {
     rightTeamStarContainerEl.innerHTML = ""
 
     let i = 0
-    for (i; i < currentLeftStars; i++) createStar("green", "fill")
-    for (i; i < currentFirstTo; i++) createStar("green", "empty")
+    for (i; i < currentLeftStars; i++) createStar("left", "fill")
+    for (i; i < currentFirstTo; i++) createStar("left", "empty")
     i = 0
-    for (i; i < currentRightStars; i++) createStar("blue", "fill")
-    for (i; i < currentFirstTo; i++) createStar("blue", "empty")
+    for (i; i < currentRightStars; i++) createStar("right", "fill")
+    for (i; i < currentFirstTo; i++) createStar("right", "empty")
 
 
     function createStar(colour, status) {
         const wrapper = document.createElement("div")
         wrapper.classList.add("team-star-wrapper")
 
-        let image
-        if (status === "fill") {
-            image = document.createElement("img")
-            image.setAttribute("src", `../_shared/assets/${colour} star.png`)
-        } else {
-            image = document.createElement("div")
-            image.classList.add("no-star", (colour === "green")? "no-left-star" : "no-right-star")
-        }
+        const image = document.createElement("img")
+        image.setAttribute("src", `static/stars/${colour}-star-${status === "fill" ? "fill" : "empty"}.png`)
 
         wrapper.append(image)
-        if (colour === "green") leftTeamStarContainerEl.append(wrapper)
+        if (colour === "left") leftTeamStarContainerEl.append(wrapper)
         else rightTeamStarContainerEl.append(wrapper)
     }
 }
