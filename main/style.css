@@ -8,6 +8,14 @@
     --current-score-horizontal-alignment: 1150px;
 }
 
+video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+}
+
 /* Fonts */
 @font-face {
     font-family: "Bubble Candy";
@@ -22,7 +30,6 @@
     left: 0;
     width: 1920px;
     height: 1080px;
-    background-image: url("static/background.png");
 }
 
 /* Team Name */

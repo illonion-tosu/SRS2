@@ -13,6 +13,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <video autoplay loop muted>
+        <source src="static/videobg.mp4">
+    </video>
+
     <div class="main">
         <!-- Other Images (layered underneath)-->
         <img class="green-section" src="static/green section.png">
@@ -41,10 +45,25 @@
             <div class="team-pick-container right-team-pick-container" id="right-team-pick-container"></div>
         </div>
 
+        <!-- Now Playing Section -->
+        <div class="now-playing">
+            <img src="static/now-playing/left-now-playing-background.png">
+            <div class="now-playing-banner" id="now-playing-banner"></div>
+            <div class="now-playing-metadata now-playing-title-difficulty" id="now-playing-title-difficulty">SONG TITLE (DIFFICULTY)</div>
+            <div class="now-playing-metadata now-playing-artist" id="now-playing-artist">ARTIST</div>
+            <div class="now-playing-stats-container">
+                <div class="now-playing-stat">SR: <span id="now-playing-sr">9.99*</span></div>
+                <div class="now-playing-stat">CS: <span id="now-playing-cs">9.99*</span></div>
+                <div class="now-playing-stat">BPM: <span id="now-playing-bpm">9.99*</span></div>
+                <div class="now-playing-stat">AR: <span id="now-playing-ar">9.99*</span></div>
+                <div class="now-playing-stat">HP: <span id="now-playing-hp">9.99*</span></div>
+                <div class="now-playing-stat">LEN: <span id="now-playing-len">9.99*</span></div>
+            </div>
+        </div>
+
         <!-- Chat Display -->
-        <div class="chat-display">
-            <div class="chat-display-background"></div>
-            <div class="chat-display-wrapper" id="chat-display-wrapper"></div>
+        <div class="chat-display" id="chat-display">
+            <div class="messages-container" id="messages-container"></div>
         </div>
     </div>
 

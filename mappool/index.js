@@ -69,8 +69,8 @@ async function getBeatmaps() {
 }
 getBeatmaps()
 
-// Find beatmap
-const findBeatmapById = beatmapId => allBeatmaps.find(beatmap => Number(beatmap.beatmap_id) === Number(beatmapId))
+// Find Beatmaps
+const findBeatmaps = beatmapId => allBeatmaps.find(beatmap => Number(beatmap.beatmap_id) === Number(beatmapId))
 
 // Create Ban Wrapper
 function createBanWrapper(currentMap, currentContainer, team) {
@@ -226,16 +226,29 @@ const leftTeamNameEl = document.getElementById("left-team-name")
 const rightTeamNameEl = document.getElementById("right-team-name")
 let leftTeamName, rightTeamName
 
-// Chat stuff
-const chatDisplayWrapperEl = document.getElementById("chat-display-wrapper")
-let chatLen
-
 // Autopicking / beatmap stuff
 let mapId, mapChecksum
+
+// Now Playing
+const nowPlayingBannerEl = document.getElementById("now-playing-banner")
+const nowPlayingTitleDifficultyEl = document.getElementById("now-playing-title-difficulty")
+const nowPlayingArtistEl = document.getElementById("now-playing-artist")
+let currentBeatmapId, currentBeatmapChecksum, currentMappoolBeatmap
+// Now Playing Stats
+const nowPlayingSrEl = document.getElementById("now-playing-sr")
+const nowPlayingCsEl = document.getElementById("now-playing-cs")
+const nowPlayingBpmEl = document.getElementById("now-playing-bpm")
+const nowPlayingArEl = document.getElementById("now-playing-ar")
+const nowPlayingHpEl = document.getElementById("now-playing-hp")
+const nowPlayingLenEl = document.getElementById("now-playing-len")
 
 // Scores
 let currentLeftScore, currentRightScore, currentLeftSecondaryScore, currentRightSecondaryScore
 let ipcState, checkedWinner = false
+
+// Chat display container
+const messagesContainerEl = document.getElementById("messages-container")
+let chatLen = 0
 
 // Socket
 const socket = createTosuWsSocket()
@@ -252,46 +265,32 @@ socket.onmessage = event => {
         rightTeamNameEl.innerText = rightTeamName
     }
 
-    // This is also mostly taken from Victim Crasher: https://github.com/VictimCrasher/static/tree/master/WaveTournament
+        // This is also mostly taken from Victim Crasher: https://github.com/VictimCrasher/static/tree/master/WaveTournament
     if (chatLen !== data.tourney.chat.length) {
-        (chatLen === 0 || chatLen > data.tourney.chat.length) ? (chatDisplayWrapperEl.innerHTML = "", chatLen = 0) : null
+        (chatLen === 0 || chatLen > data.tourney.chat.length) ? (messagesContainerEl.innerHTML = "", chatLen = 0) : null
+        
         const fragment = document.createDocumentFragment()
-
         for (let i = chatLen; i < data.tourney.chat.length; i++) {
-            const chatColour = data.tourney.chat[i].team
-
             // Chat message container
             const chatMessageContainer = document.createElement("div")
-            chatMessageContainer.classList.add("message-container")
-
-            // Time
-            const chatDisplayTime = document.createElement("div")
-            chatDisplayTime.classList.add("message-time")
-            chatDisplayTime.innerText = data.tourney.chat[i].timestamp
-
-            // Whole Message
-            const chatDisplayWholeMessage = document.createElement("div")
-            chatDisplayWholeMessage.classList.add("message-wrapper")  
+            chatMessageContainer.classList.add("message-container")  
 
             // Name
-            const chatDisplayName = document.createElement("span")
-            chatDisplayName.classList.add("message-name")
-            chatDisplayName.classList.add(chatColour)
-            chatDisplayName.innerText = data.tourney.chat[i].name + ": ";
+            const chatMessageName = document.createElement("div")
+            chatMessageName.classList.add("message-name", data.tourney.chat[i].team)
+            chatMessageName.textContent = `${data.tourney.chat[i].name}:`
 
             // Message
-            const chatDisplayMessage = document.createElement("span")
-            chatDisplayMessage.classList.add("message-content")
-            chatDisplayMessage.innerText = data.tourney.chat[i].message
-
-            chatDisplayWholeMessage.append(chatDisplayName, chatDisplayMessage)
-            chatMessageContainer.append(chatDisplayTime, chatDisplayWholeMessage)
+            const chatMessageContent = document.createElement("div")
+            chatMessageContent.classList.add("message-content")
+            chatMessageContent.innerText = data.tourney.chat[i].message
+            chatMessageContainer.append(chatMessageName, chatMessageContent)
             fragment.append(chatMessageContainer)
         }
 
-        chatDisplayWrapperEl.append(fragment)
+        messagesContainerEl.append(fragment)
         chatLen = data.tourney.chat.length
-        chatDisplayWrapperEl.scrollTop = chatDisplayWrapperEl.scrollHeight
+        messagesContainerEl.scrollTop = messagesContainerEl.scrollHeight
     }
 
     if (mapId !== data.beatmap.id || mapChecksum !== data.beatmap.checksum) {
@@ -346,6 +345,45 @@ socket.onmessage = event => {
             // Set winner on tile
             if (!currentPickTile) return
         }
+    }
+
+    if ((currentBeatmapId !== data.beatmap.id || currentBeatmapChecksum !== data.beatmap.checksum) && allBeatmaps) {
+        currentBeatmapId = data.beatmap.id
+        currentBeatmapChecksum = data.beatmap.checksum
+
+        // Metadata
+        nowPlayingBannerEl.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${data.beatmap.set}/covers/cover.jpg")`
+        nowPlayingTitleDifficultyEl.textContent = `${data.beatmap.title} [${data.beatmap.version}]`
+        nowPlayingArtistEl.textContent = data.beatmap.artist
+
+        // Find beatmap
+        currentMappoolBeatmap = findBeatmaps(currentBeatmapId)
+        if (currentMappoolBeatmap) {
+            const allStats = getStats(
+                Math.round(Number(currentMappoolBeatmap.difficultyrating) * 100) / 100,
+                Number(currentMappoolBeatmap.diff_approach),
+                Number(currentMappoolBeatmap.diff_size),
+                Number(currentMappoolBeatmap.diff_drain),
+                Number(currentMappoolBeatmap.bpm),
+                Number(currentMappoolBeatmap.total_length)
+            )
+
+            nowPlayingSrEl.textContent = `${allStats.sr}*`
+            nowPlayingCsEl.textContent = allStats.cs
+            nowPlayingBpmEl.textContent = allStats.bpm
+            nowPlayingArEl.textContent = allStats.ar
+            nowPlayingHpEl.textContent = allStats.hp
+            nowPlayingLenEl.textContent = setLengthDisplay(allStats.len)
+        }
+    }
+
+    if (!currentMappoolBeatmap) {
+        nowPlayingSrEl.textContent = `${data.beatmap.stats.stars.total}*`
+        nowPlayingCsEl.textContent = data.beatmap.stats.cs.converted
+        nowPlayingBpmEl.textContent = data.beatmap.stats.bpm.common
+        nowPlayingArEl.textContent = data.beatmap.stats.ar.converted
+        nowPlayingHpEl.textContent = data.beatmap.stats.hp.converted
+        nowPlayingLenEl.textContent = setLengthDisplay(Math.round((data.beatmap.time.lastObject - data.beatmap.time.firstObject) / 1000))
     }
 }
 
