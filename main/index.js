@@ -124,21 +124,10 @@ socket.onmessage = event => {
         let currentLeftScore = 0, currentRightScore = 0, currentScoreDifference = 0
 
         for (let i = 0; i < data.tourney.clients.length; i++) {
-            let currentScore = data.tourney.clients[i].play.score
-            
-            // EZ Multiplier
-            const currentMods = getMods(data.tourney.clients[i].play.mods.number)
-            if (currentMappoolBeatmap && (currentMappoolBeatmap.mod === "FM" && currentMods.includes("EZ") ||
-            currentMappoolBeatmap.mod === "BS" && currentMappoolBeatmap.second_mod === "FM" && currentMods.includes("EZ"))) {
-                currentScore *= 1.75
-            }
-
-            // Add to client
-            if (i % 2 === 0) {
-                currentLeftScore += currentScore
-            } else {
-                currentRightScore += currentScore
-            }
+            let currentPlay = data.tourney.clients[i].play
+            let currentMods = getMods(currentPlay.mods.number)
+            currentPlay.score *= currentMods.includes("EZ") ? 1.75 : 1
+            data.tourney.clients[i].team === "left" ? currentLeftScore += currentPlay.score : currentRightScore += currentPlay.score
         }
 
         currentScoreDifference = Math.abs(currentRightScore - currentLeftScore)
