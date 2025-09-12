@@ -1,3 +1,15 @@
+:root {
+    --color-left: #FF6A66;
+    --color-right: #9cce00;
+}
+
+/* Fonts */
+@font-face {
+    font-family: "Bubble Candy";
+    font-weight: 400;
+    src: url("../fonts/BubbleCandy-Regular.otf")
+}
+
 video {
     position: absolute;
     top: 0;
@@ -13,5 +25,53 @@ video {
     top: 0;
     width: 1920px;
     height: 1080px;
-    background-image: url("static/winner-scene.png");
+}
+
+/* Crown */
+.crown {
+    position: absolute;
+    top: 134px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Match Winner Text */
+.match-winner-text {
+    position: absolute;
+    top: 300px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Bubble Candy";
+    color: var(--color-left);
+    font-size: 6.5em;
+}
+.match-team-name {
+    position: absolute;
+    top: 420px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Bubble Candy";
+    color: var(--color-left);
+    font-size: 8.75em;
+    width: 100%;
+    text-align: center;
+}
+
+/* Players */
+.players {
+    position: absolute;
+    top: 577px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Fredoka";
+    font-weight: 600;
+    display: flex;
+    text-align: center;
+    flex-wrap: wrap;
+    font-size: 2.6em;
+    justify-content: center;
+    width: 1000px;
+}
+.players > * {
+    width: 500px;
 }
