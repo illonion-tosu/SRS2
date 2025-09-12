@@ -7,10 +7,10 @@
 
 /* Variables */
 :root {
-    --ban-colour: #ff8888;
-    --green: #c3ff88;
-    --blue: #4a67dd;
+    --left-colour: #FC9D9D;
+    --right-colour: #C9DF75;
     --banner-horizontal-alignment: 500px;
+    --team-pick-bottom-section-height: 40px;
 }
 
 /* Whole Page */
@@ -24,6 +24,10 @@
 }
 
 /* Underneath Layers */
+.green-section {
+    position: absolute;
+    top: 430px;
+}
 .red-section {
     position: absolute;
     top: -22px;
@@ -58,7 +62,6 @@
     position: absolute;
     width: 1920px;
     height: 346px;
-    background-color: rgba(0, 0, 0, 0.5);
 }
 .left-team-section { top: 195px; }
 .right-team-section { top: 536px; }
@@ -100,14 +103,6 @@
     justify-content: center;
     align-items: center;
 }
-/* Team star Images */
-.no-star {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-}
-.no-left-star { background-color: var(--green); }
-.no-right-star { background-color: var(--blue); }
 
 /* Team Line */
 .team-line {
@@ -116,24 +111,32 @@
     top: 200px;
 }
 
+.team-ban-image {
+    position: absolute;
+    top: 232px;
+    left: 85px;
+}
+
 /* Team Ban Container */
 .team-ban-container {
     position: absolute;
-    top: 260px;
-    left: 168px;
-    width: 275px;
+    top: 227px;
+    left: 185px;
+    width: 325px;
     display: flex;
     gap: 35px;
+    font-family: "Fredoka";
+    font-weight: 500;
 }
 
 /* Team Ban Wrapper */
 .team-ban-wrapper {
     position: relative;
     flex-grow: 1;
-    height: 85px;
+    height: 75px;
     border-radius: 15px;
     background-color: #1e1e1e;
-    border: 4px solid var(--ban-colour);
+    border: 4px solid;
 }
 
 /* Team Ban Background Image */
@@ -162,35 +165,23 @@
 .team-pick-container {
     position: absolute;
     top: 50%;
-    left: 607px;
+    left: 661px;
     transform: translateY(-50%);
     display: flex;
     gap: 17px;
-    width: 1285px;
+    width: 1165px;
 }
 
 /* Team Pick Wrapper */
 .team-pick-wrapper {
     position: relative;
     flex-grow: 1;
-    height: 321px;
+    height: 245px;
     border-radius: 44px;
+    overflow: hidden;
 }
-.left-team-pick-container .team-pick-wrapper { background-color: #2a5841; }
-.right-team-pick-container .team-pick-wrapper { background-color: #263573; }
-
-/* Team Pick Wrapper Outline */
-.team-pick-outline {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
-    outline-offset: -5px;
-}
-.left-team-pick-outline { outline: 5px solid var(--green); }
-.right-team-pick-outline { outline: 5px solid var(--blue); }
+.left-team-pick-container .team-pick-wrapper { background-color: var(--left-colour); }
+.right-team-pick-container .team-pick-wrapper { background-color: var(--right-colour); }
 
 /* Team Pick Background Image */
 .team-pick-background-image {
@@ -199,25 +190,29 @@
     border-radius: inherit;
     background-size: cover;
     background-position: center;
-    opacity: 0.4;
 }
 
-/* Team Pick Winner Crown */
-.team-pick-winner-crown {
+/* Team Pick Bottom Sedction */
+.team-pick-bottom-section {
     position: absolute;
-    top: 25px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 0;
+    width: 100%;
+    height: var(--team-pick-bottom-section-height);
+    display: none;
 }
+.left-team-pick-bottom-section { background-color: #FB6769; }
+.right-team-pick-bottom-section { background-color: #9DCD33; }
 
 /* Team Pick Mod Id */
 .team-pick-mod-id {
     position: absolute;
-    bottom: 8px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 40px;
+    font-size: 1.75em;
     color: white;
+    line-height: var(--team-pick-bottom-section-height);
+    font-family: "Fredoka";
+    font-size: 500;
 }
 
 /* Chat Display */

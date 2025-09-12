@@ -40,16 +40,15 @@ async function getBeatmaps() {
         const teamPickBackgroundImage = document.createElement("div")
         teamPickBackgroundImage.classList.add("team-pick-background-image")
 
-        const teamPickOutline = document.createElement("div")
-        teamPickOutline.classList.add("team-pick-outline")
-
-        const teamPickWinnerCrown = document.createElement("img")
-        teamPickWinnerCrown.classList.add("team-pick-winner-crown")
+        const teamBottomSection = document.createElement("div")
+        teamBottomSection.classList.add("team-pick-bottom-section")
+        teamBottomSection.classList.add(`${side}-team-pick-bottom-section`)
 
         const teamPickModId = document.createElement("div")
         teamPickModId.classList.add("team-pick-mod-id")
+        teamBottomSection.append(teamPickModId)
 
-        teamPickWrapper.append(teamPickBackgroundImage, teamPickOutline, teamPickWinnerCrown, teamPickModId)
+        teamPickWrapper.append(teamPickBackgroundImage, teamBottomSection)
         document.getElementById(`${side}-team-pick-container`).append(teamPickWrapper)
     }
 
@@ -74,10 +73,13 @@ getBeatmaps()
 const findBeatmapById = beatmapId => allBeatmaps.find(beatmap => Number(beatmap.beatmap_id) === Number(beatmapId))
 
 // Create Ban Wrapper
-function createBanWrapper(currentMap, currentContainer) {
+function createBanWrapper(currentMap, currentContainer, team) {
+    team = team === "red" ? "left" : "right"
+
     const teamBanWrapper = document.createElement("div")
     teamBanWrapper.classList.add("team-ban-wrapper")
     teamBanWrapper.dataset.id = currentMap.beatmap_id
+    teamBanWrapper.style.borderColor = `var(--${team}-colour)`
 
     const teamBanBackgroundImage = document.createElement("div")
     teamBanBackgroundImage.classList.add("team-ban-background-image")
@@ -86,6 +88,7 @@ function createBanWrapper(currentMap, currentContainer) {
     const teamBanModId = document.createElement("team-ban-mod-id")
     teamBanModId.classList.add("team-ban-mod-id")
     teamBanModId.innerText = `${currentMap.mod}${currentMap.order}`
+    teamBanWrapper.style.color = `var(--${team}-colour)`
 
     teamBanWrapper.append(teamBanBackgroundImage, teamBanModId)
     currentContainer.append(teamBanWrapper)
@@ -120,12 +123,11 @@ function mapClickEvent(event) {
     if (this.dataset.pickTeam === "true" || this.dataset.banTeam === "true") return
 
     if (action === "ban") {
-
         const currentContainer = team === "red" ? leftTeamBanContainerEl : rightTeamBanContainerEl
         
         // Check container size
         if (currentContainer.childElementCount < 2) {
-            createBanWrapper(currentMap, currentContainer)
+            createBanWrapper(currentMap, currentContainer, team)
             this.dataset.banTeam = "true"
         }
     }
@@ -145,7 +147,8 @@ function mapClickEvent(event) {
         currentPickTile = currentTile
         currentTile.dataset.id = currentMap.beatmap_id
         currentTile.children[0].style.backgroundImage =  `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
-        currentTile.children[3].innerText = `${currentMap.mod}${currentMap.order}`
+        currentTile.children[1].style.display = "block"
+        currentTile.children[1].children[0].innerText = `${currentMap.mod}${currentMap.order}`
 
         document.cookie = `currentPicker=${team}; path=/`
         currentPickMap = currentMap
@@ -365,9 +368,6 @@ socket.onmessage = event => {
 
             // Set winner on tile
             if (!currentPickTile) return
-            currentPickTile.children[1].classList.add(`${winner === "red"? "left" : "right"}-team-pick-outline`)
-            currentPickTile.children[1].classList.remove(`${winner === "red"? "right" : "left"}-team-pick-outline`)
-            currentPickTile.children[2].setAttribute("src", `static/${winner === "red"? "green" : "blue"} crown.png`)
         }
     }
 }
@@ -457,9 +457,9 @@ function mappoolManagementSetAction() {
         let i = 0
         for (i = 0; i < currentLeftBanNumberTotal; i++) {
             const mappoolManagementWhoseBanOption = document.createElement("option")
-            mappoolManagementWhoseBanOption.setAttribute("value", `green|${i}`)
-            if (i < leftTeamBanContainerEl.childElementCount) mappoolManagementWhoseBanOption.innerText = `Green Ban ${i + 1} - ${leftTeamBanContainerEl.children[i].innerText}`
-            else mappoolManagementWhoseBanOption.innerText = `Green Ban ${i + 1}`
+            mappoolManagementWhoseBanOption.setAttribute("value", `red|${i}`)
+            if (i < leftTeamBanContainerEl.childElementCount) mappoolManagementWhoseBanOption.innerText = `Red Ban ${i + 1} - ${leftTeamBanContainerEl.children[i].innerText}`
+            else mappoolManagementWhoseBanOption.innerText = `Red Ban ${i + 1}`
 
             mappoolManagementWhoseBanSelect.append(mappoolManagementWhoseBanOption)
         }
@@ -513,16 +513,16 @@ function mappoolManagementSetAction() {
         // Create options
         for (i = 0; i < leftTeamPickContainerEl.childElementCount; i++) {
             const mappoolManagementWhosePickOption = document.createElement("option")
-            mappoolManagementWhosePickOption.setAttribute("value", `green|${i}`)
-            if (leftTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Green Pick ${i + 1} - ${leftTeamPickContainerEl.children[i].children[3].innerText}`
-            else mappoolManagementWhosePickOption.innerText = `Green Pick ${i + 1}`
+            mappoolManagementWhosePickOption.setAttribute("value", `red|${i}`)
+            if (leftTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Red Pick ${i + 1} - ${leftTeamPickContainerEl.children[i].children[1].children[0].innerText}`
+            else mappoolManagementWhosePickOption.innerText = `Red Pick ${i + 1}`
 
             mappoolManagementWhosePickSelect.append(mappoolManagementWhosePickOption)
         }
         for (i = 0; i < rightTeamPickContainerEl.childElementCount; i++) {
             const mappoolManagementWhosePickOption = document.createElement("option")
             mappoolManagementWhosePickOption.setAttribute("value", `blue|${i}`)
-            if (rightTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Blue Pick ${i + 1} - ${rightTeamPickContainerEl.children[i].children[3].innerText}`
+            if (rightTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Blue Pick ${i + 1} - ${rightTeamPickContainerEl.children[i].children[1].children[0].innerText}`
             else mappoolManagementWhosePickOption.innerText = `Blue Pick ${i + 1}`
 
             mappoolManagementWhosePickSelect.append(mappoolManagementWhosePickOption)
@@ -568,16 +568,16 @@ function mappoolManagementSetAction() {
         // Create options
         for (i = 0; i < leftTeamPickContainerEl.childElementCount; i++) {
             const mappoolManagementWhosePickOption = document.createElement("option")
-            mappoolManagementWhosePickOption.setAttribute("value", `green|${i}`)
-            if (leftTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Green Pick ${i + 1} - ${leftTeamPickContainerEl.children[i].children[3].innerText}`
-            else mappoolManagementWhosePickOption.innerText = `Green Pick ${i + 1}`
+            mappoolManagementWhosePickOption.setAttribute("value", `red|${i}`)
+            if (leftTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Red Pick ${i + 1} - ${leftTeamPickContainerEl.children[i].children[1].children[0].innerText}`
+            else mappoolManagementWhosePickOption.innerText = `Red Pick ${i + 1}`
 
             mappoolManagementWhosePickSelect.append(mappoolManagementWhosePickOption)
         }
         for (i = 0; i < rightTeamPickContainerEl.childElementCount; i++) {
             const mappoolManagementWhosePickOption = document.createElement("option")
             mappoolManagementWhosePickOption.setAttribute("value", `blue|${i}`)
-            if (rightTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Blue Pick ${i + 1} - ${rightTeamPickContainerEl.children[i].children[3].innerText}`
+            if (rightTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Blue Pick ${i + 1} - ${rightTeamPickContainerEl.children[i].children[1].children[0].innerText}`
             else mappoolManagementWhosePickOption.innerText = `Blue Pick ${i + 1}`
 
             mappoolManagementWhosePickSelect.append(mappoolManagementWhosePickOption)
@@ -598,8 +598,8 @@ function mappoolManagementSetAction() {
             mappoolManagementWhichTeamContainer.setAttribute("size", 2)
 
             const mappoolManagementWhichTeamOptionOne = document.createElement("option")
-            mappoolManagementWhichTeamOptionOne.setAttribute("value", "green")
-            mappoolManagementWhichTeamOptionOne.innerText = "Green"
+            mappoolManagementWhichTeamOptionOne.setAttribute("value", "red")
+            mappoolManagementWhichTeamOptionOne.innerText = "Red"
             const mappoolManagementWhichTeamOptionTwo = document.createElement("option")
             mappoolManagementWhichTeamOptionTwo.setAttribute("value", "blue")
             mappoolManagementWhichTeamOptionTwo.innerText = "Blue"
@@ -701,7 +701,7 @@ function mappoolManagementSetBan() {
     if (!currentMap) return
 
     // Find which container
-    const currentContainer = mappoolManagementSetWhoseBanTeam === "green"? leftTeamBanContainerEl : rightTeamBanContainerEl
+    const currentContainer = mappoolManagementSetWhoseBanTeam === "red"? leftTeamBanContainerEl : rightTeamBanContainerEl
     if (!currentContainer) return
 
     // Find if ban number currently exists or not
@@ -710,7 +710,7 @@ function mappoolManagementSetBan() {
 
     // If tile does not exist
     if (!tileExists) {
-        createBanWrapper(currentMap, currentContainer)
+        createBanWrapper(currentMap, currentContainer, mappoolManagementSetWhoseBanTeam === "red" ? "red" : "blue")
         document.getElementById(currentMap.beatmap_id).dataset.banTeam = "true"
     } else {
         const currentTile = currentContainer.children[mappoolManagementSetWhoseBanNumber]
@@ -739,7 +739,7 @@ function mappoolManagementRemoveBan() {
     if (mappoolManagementSetWhoseBanTeam === undefined || mappoolManagementSetWhoseBanNumber === undefined) return
 
     // Find which container
-    const currentContainer = mappoolManagementSetWhoseBanTeam === "green"? leftTeamBanContainerEl : rightTeamBanContainerEl
+    const currentContainer = mappoolManagementSetWhoseBanTeam === "red"? leftTeamBanContainerEl : rightTeamBanContainerEl
     if (!currentContainer) return
 
     // Find which tile
@@ -781,7 +781,7 @@ function mappoolManagementSetPick() {
     if (!currentMap) return
 
     // Find which container
-    const currentContainer = mappoolManagementSetWhosePickTeam === "green"? leftTeamPickContainerEl : rightTeamPickContainerEl
+    const currentContainer = mappoolManagementSetWhosePickTeam === "red"? leftTeamPickContainerEl : rightTeamPickContainerEl
     if (!currentContainer) return
 
     // Find if ban number currently exists or not
@@ -803,16 +803,12 @@ function mappoolManagementSetPick() {
         const previousMapButton = document.getElementById(previousMapId)
         previousMapButton.dataset.banTeam = mapCurrentlyBannedElsewhere? "true" : "false"
         previousMapButton.dataset.pickTeam = mapCurrentlyPickedElsewhere? "true" : "false"
-
-        currentTile.dataset.id = currentMap.beatmap_id
-        currentTile.children[0].style.backgroundImage =  `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
-        currentTile.children[3].innerText = `${currentMap.mod}${currentMap.order}`
-        document.getElementById(`${currentMap.beatmap_id}`).dataset.pickTeam = "true"
     }
 
     currentTile.dataset.id = currentMap.beatmap_id
-    currentTile.children[0].style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
-    currentTile.children[3].innerText = `${currentMap.mod}${currentMap.order}`
+    currentTile.children[0].style.backgroundImage =  `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
+    currentTile.children[1].style.display = "block"
+    currentTile.children[1].children[0].innerText = `${currentMap.mod}${currentMap.order}`
     document.getElementById(`${currentMap.beatmap_id}`).dataset.pickTeam = "true"
 }
 
@@ -820,7 +816,7 @@ function mappoolManagementRemovePick() {
     if (mappoolManagementSetWhosePickTeam === undefined || mappoolManagementSetWhosePickNumber === undefined) return
 
     // Find which container
-    const currentContainer = mappoolManagementSetWhosePickTeam === "green"? leftTeamPickContainerEl : rightTeamPickContainerEl
+    const currentContainer = mappoolManagementSetWhosePickTeam === "red"? leftTeamPickContainerEl : rightTeamPickContainerEl
     if (!currentContainer) return
 
     // Find if ban number currently exists or not
@@ -844,10 +840,8 @@ function mappoolManagementRemovePick() {
 
     currentTile.removeAttribute("data-id")
     currentTile.children[0].style.backgroundImage = ""
-    currentTile.children[1].classList.remove("left-team-pick-outline")
-    currentTile.children[1].classList.remove("right-team-pick-outline")
-    currentTile.children[2].setAttribute("src", "")
-    currentTile.children[3].innerText = ""
+    currentTile.children[1].style.display = "none"
+    currentTile.children[1].children[0].innerText = ""
 }
 
 // Mappool Management Set Which Team
@@ -861,13 +855,13 @@ function mappoolManagementSetWinner() {
     if (mappoolManagementSetWhosePickTeam === undefined || mappoolManagementSetWhosePickNumber === undefined || mappoolManagementSetWhichTeamTeam === undefined) return
 
     // Find which container
-    const currentContainer = mappoolManagementSetWhosePickTeam === "green"? leftTeamPickContainerEl : rightTeamPickContainerEl
+    const currentContainer = mappoolManagementSetWhosePickTeam === "red"? leftTeamPickContainerEl : rightTeamPickContainerEl
     if (!currentContainer) return
     const currentTile = currentContainer.children[mappoolManagementSetWhosePickNumber]
-
-    currentTile.children[1].classList.add(`${mappoolManagementSetWhichTeamTeam === "green"? "left" : "right"}-team-pick-outline`)
-    currentTile.children[1].classList.remove(`${mappoolManagementSetWhichTeamTeam === "green"? "right" : "left"}-team-pick-outline`)
-    currentTile.children[2].setAttribute("src", `static/${mappoolManagementSetWhichTeamTeam} crown.png`)
+    currentTile.style.backgroundColor = `var(--${mappoolManagementSetWhichTeamTeam === "red" ? "left" : "right"}-colour)`
+    currentTile.children[0].style.opacity = 0.4
+    currentTile.children[1].classList.remove(`${mappoolManagementSetWhichTeamTeam === "red" ? "right" : "left" }-team-pick-bottom-section`)
+    currentTile.children[1].classList.add(`${mappoolManagementSetWhichTeamTeam === "red" ? "left" : "right" }-team-pick-bottom-section`)
 }
 
 // Mappool Managemnt Set Winner
@@ -875,12 +869,12 @@ function mappoolManagementRemoveWinner() {
     if (mappoolManagementSetWhosePickTeam === undefined || mappoolManagementSetWhosePickNumber === undefined) return
 
     // Find which container'
-    const currentContainer = mappoolManagementSetWhosePickTeam === "green"? leftTeamPickContainerEl : rightTeamPickContainerEl
+    const currentContainer = mappoolManagementSetWhosePickTeam === "red"? leftTeamPickContainerEl : rightTeamPickContainerEl
     if (!currentContainer) return
     const currentTile = currentContainer.children[mappoolManagementSetWhosePickNumber]
 
-    currentTile.children[1].classList.remove("left-team-pick-outline")
-    currentTile.children[1].classList.remove("right-team-pick-outline")
-    currentTile.children[2].setAttribute("src", "")
-
+    currentTile.style.backgroundColor = `var(--${mappoolManagementSetWhosePickTeam === "red" ? "left" : "right"}-colour)`
+    currentTile.children[0].style.opacity = 1
+    currentTile.children[1].classList.remove(`${mappoolManagementSetWhosePickTeam === "red" ? "right" : "left"}-team-pick-bottom-section`)
+    currentTile.children[1].classList.add(`${mappoolManagementSetWhosePickTeam === "red" ? "left" : "right"}-team-pick-bottom-section`)
 }
