@@ -106,7 +106,7 @@ function mapClickEvent(event) {
     // Find map
     const currentMapId = this.dataset.id
     console.log(currentMapId)
-    const currentMap = findBeatmapById(currentMapId)
+    const currentMap = findBeatmaps(currentMapId)
     console.log(currentMap)
     if (!currentMap) return
 
@@ -188,9 +188,13 @@ function createStarDisplay() {
         else rightTeamStarContainerEl.append(wrapper)
     }
 
+    let currentWinner = currentLeftStars > currentRightStars ? leftTeamName : currentRightStars > currentLeftStars ? rightTeamName : "no one"
+    let currentWinnerSide = currentLeftStars > currentRightStars ? "left" : currentRightStars > currentLeftStars ? "right" : "no one"
     document.cookie = `currentLeftStars=${currentLeftStars}; path=/`
     document.cookie = `currentRightStars=${currentRightStars}; path=/`
     document.cookie = `currentFirstTo=${currentFirstTo}; path=/`
+    document.cookie = `currentWinner=${currentWinner}; path=/`
+    document.cookie = `currentWinnerSide=${currentWinnerSide}; path=/`
 }
 
 /**
@@ -210,9 +214,6 @@ function updateStarCount(team, action) {
     if (currentRightStars < 0) currentRightStars = 0
 
     createStarDisplay()
-
-    document.cookie = `currentLeftStars=${currentLeftStars}; path=/`
-    document.cookie = `currentRightStars=${currentRightStars}; path=/`
 
     if (currentLeftStars > currentRightStars) {
         document.cookie=`currentWinningTeam=${leftTeamName}; path=/`
@@ -717,7 +718,7 @@ function mappoolManagementSetBan() {
     if (mappoolManagementSetWhoseBanTeam === undefined || mappoolManagementSetWhoseBanNumber === undefined || mappoolManagementSelectedMap === undefined) return
 
     // Find which map
-    const currentMap = findBeatmapById(mappoolManagementSelectedMap)
+    const currentMap = findBeatmaps(mappoolManagementSelectedMap)
     if (!currentMap) return
 
     // Find which container
@@ -797,7 +798,7 @@ function mappoolManagementSetPick() {
     if (mappoolManagementSetWhosePickTeam === undefined || mappoolManagementSetWhosePickNumber === undefined || mappoolManagementSelectedMap === undefined) return
 
     // Find which map
-    const currentMap = findBeatmapById(mappoolManagementSelectedMap)
+    const currentMap = findBeatmaps(mappoolManagementSelectedMap)
     if (!currentMap) return
 
     // Find which container
