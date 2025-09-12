@@ -57,7 +57,20 @@ video {
     gap: 22px;
 }
 .star-container-left { left: var(--star-container-horizontal-alignment); }
-.star-container-right { right: var(--star-container-horizontal-alignment); }
+.star-container-right { 
+    right: var(--star-container-horizontal-alignment);
+    flex-direction: row-reverse;
+}
+
+/* Team Star Wrapper */
+.team-star-wrapper {
+    position: relative;
+    width: 39px;
+    height: 39px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .star {
     width: 43px;
     height: 41px;

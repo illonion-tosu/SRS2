@@ -154,6 +154,8 @@ function mapClickEvent(event) {
         currentPickMap = currentMap
 
         this.dataset.pickTeam = "true"
+
+        updateCurrentPicker()
     }
 }
 
@@ -174,7 +176,6 @@ function createStarDisplay() {
     for (i; i < currentRightStars; i++) createStar("right", "fill")
     for (i; i < currentFirstTo; i++) createStar("right", "empty")
 
-
     function createStar(colour, status) {
         const wrapper = document.createElement("div")
         wrapper.classList.add("team-star-wrapper")
@@ -186,6 +187,10 @@ function createStarDisplay() {
         if (colour === "left") leftTeamStarContainerEl.append(wrapper)
         else rightTeamStarContainerEl.append(wrapper)
     }
+
+    document.cookie = `currentLeftStars=${currentLeftStars}; path=/`
+    document.cookie = `currentRightStars=${currentRightStars}; path=/`
+    document.cookie = `currentFirstTo=${currentFirstTo}; path=/`
 }
 
 /**
@@ -896,6 +901,7 @@ function mappoolManagementRemoveWinner() {
 
 // Update star count
 const nowPlayingBackgroundEl = document.getElementById("now-playing-background")
+document.cookie = `currentPicker=left; path=/`
 let currentPicker
 function updateCurrentPicker(side) {
     currentPicker = side

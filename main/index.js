@@ -143,13 +143,13 @@ socket.onmessage = event => {
         // Scorebar
         if (currentLeftScore > currentRightScore) {
             scorebarStarEl.style.left = `${960 - scoreDifferencePosition}px`
-            scorebarStarEl.setAttribute("src", `static/stars/left-star-full.png`)
+            scorebarStarEl.setAttribute("src", `static/score-stars/left-star-full.png`)
         } else if (currentRightScore > currentLeftScore) {
             scorebarStarEl.style.left = `${960 + scoreDifferencePosition}px`
-            scorebarStarEl.setAttribute("src", `static/stars/right-star-full.png`)
+            scorebarStarEl.setAttribute("src", `static/score-stars/right-star-full.png`)
         } else if (currentRightScore === currentLeftScore) {
             scorebarStarEl.style.left = `960px`
-            scorebarStarEl.setAttribute("src", `static/stars/middle-star-full.png`)
+            scorebarStarEl.setAttribute("src", `static/score-stars/middle-star-full.png`)
         }
     }
 
@@ -202,4 +202,61 @@ function getStats(sr, ar, cs, hp, bpm, len, mod) {
         len = Math.round(len / 1.5)
     }
     return {sr: sr, ar: ar, cs: cs, hp: hp, bpm: bpm, len: len, mod: mod}
+}
+
+// Update star count
+const nowPlayingBackgroundEl = document.getElementById("now-playing-background")
+let previousPicker
+let currentLeftStars, currentRightStars, currentFirstTo, toggleStars
+setInterval(() => {
+    // Set current picker
+    const currentPicker = getCookie("currentPicker")
+    if (previousPicker !== currentPicker) {
+        previousPicker = currentPicker
+        nowPlayingBackgroundEl.setAttribute("src", `static/now-playing/${currentPicker}-now-playing-background.png`)
+        nowPlayingTitleDifficultyEl.style.color = `var(--color-${currentPicker})`
+        nowPlayingArtistEl.style.color = `var(--color-${currentPicker})`
+    }
+
+    // Toggle stars
+    toggleStars = getCookie("toggleStars")
+    if (toggleStars === "true") {
+        leftTeamStarContainerEl.style.display = "flex"
+        rightTeamStarContainerEl.style.display = "flex"
+
+        // Update stars
+        currentLeftStars = Number(getCookie("currentLeftStars"))
+        currentRightStars = Number(getCookie("currentRightStars"))
+        currentFirstTo = Number(getCookie("currentFirstTo"))
+        createStarDisplay()
+    } else {
+        leftTeamStarContainerEl.style.display = "none"
+        rightTeamStarContainerEl.style.display = "none"
+    }
+}, 200)
+
+const leftTeamStarContainerEl = document.getElementById("star-container-left")
+const rightTeamStarContainerEl = document.getElementById("star-container-right")
+function createStarDisplay() {
+    leftTeamStarContainerEl.innerHTML = ""
+    rightTeamStarContainerEl.innerHTML = ""
+
+    let i = 0
+    for (i; i < currentLeftStars; i++) createStar("left", "fill")
+    for (i; i < currentFirstTo; i++) createStar("left", "empty")
+    i = 0
+    for (i; i < currentRightStars; i++) createStar("right", "fill")
+    for (i; i < currentFirstTo; i++) createStar("right", "empty")
+
+    function createStar(colour, status) {
+        const wrapper = document.createElement("div")
+        wrapper.classList.add("team-star-wrapper")
+
+        const image = document.createElement("img")
+        image.setAttribute("src", `static/stars/${colour}-star-${status === "fill" ? "fill" : "empty"}.png`)
+
+        wrapper.append(image)
+        if (colour === "left") leftTeamStarContainerEl.append(wrapper)
+        else rightTeamStarContainerEl.append(wrapper)
+    }
 }
