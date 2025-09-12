@@ -318,24 +318,13 @@ socket.onmessage = event => {
     if (ipcState === 2 || ipcState === 3) {
         currentLeftScore = 0
         currentRightScore = 0
-        currentLeftSecondaryScore = 0
-        currentRightSecondaryScore = 0
 
         // Get scores for each team
         for (let i = 0; i < data.tourney.clients.length; i++) {
-            const currentPlayerPlay = data.tourney.clients[i].play
-            if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "combo") {
-                data.tourney.clients[i].team === "left"? currentLeftScore += currentPlayerPlay.combo.max : currentRightScore += currentPlayerPlay.combo.max
-                data.tourney.clients[i].team === "left"? currentLeftSecondaryScore += currentPlayerPlay.score : currentRightSecondaryScore += currentPlayerPlay.score
-            } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "miss") {
-                data.tourney.clients[i].team === "left"? currentLeftScore += currentPlayerPlay.hits["0"] : currentRightScore += currentPlayerPlay.hits["0"]
-                data.tourney.clients[i].team === "left"? currentLeftSecondaryScore += currentPlayerPlay.score : currentRightSecondaryScore += currentPlayerPlay.score
-            } else if (currentMap && currentMap.mod === "EX" && currentMap.score_method === "miss") {
-                data.tourney.clients[i].team === "left"? currentLeftScore += currentPlayerPlay.accuracy : currentRightScore += currentPlayerPlay.accuracy
-                data.tourney.clients[i].team === "left"? currentLeftSecondaryScore += currentPlayerPlay.score : currentRightSecondaryScore += currentPlayerPlay.score
-            } else {
-                data.tourney.clients[i].team === "left"? currentLeftScore += currentPlayerPlay.score : currentRightScore += currentPlayerPlay.score
-            }
+            let currentPlay = data.tourney.clients[i].play
+            let currentMods = getMods(currentPlay.mods.number)
+            currentPlay.score *= currentMods.includes("EZ") ? 1.75 : 1
+            data.tourney.clients[i].team === "left" ? currentLeftScore += currentPlay.score : currentRightScore += currentPlay.score
         }
     }
 
@@ -348,20 +337,8 @@ socket.onmessage = event => {
 
             if (!isStarOn) return
             let winner = ""
-            if (currentPickMap && currentPickMap.mod === "EX" && (currentPickMap.score_method === "combo" || currentPickMap.score_method === "acc")) {
-                if (currentLeftScore > currentRightScore) winner = "red"
-                else if (currentLeftScore < currentRightScore) winner = "blue"
-                else if (currentLeftSecondaryScore > currentRightSecondaryScore) winner = "red"
-                else if (currentLeftSecondaryScore < currentRightSecondaryScore) winner = "blue"
-            } else if (currentPickMap && currentPickMap.mod === "EX" && currentPickMap.score_method === "miss") {
-                if (currentLeftScore < currentRightScore) winner = "red"
-                else if (currentLeftScore > currentRightScore) winner = "blue"
-                else if (currentLeftSecondaryScore > currentRightSecondaryScore) winner = "red"
-                else if (currentLeftSecondaryScore < currentRightSecondaryScore) winner = "blue"
-            } else {
-                if (currentLeftScore > currentRightScore) winner = "red"
-                else if (currentLeftScore < currentRightScore) winner = "blue"
-            }
+            if (currentLeftScore > currentRightScore) winner = "red"
+            else if (currentLeftScore < currentRightScore) winner = "blue"
 
             if (!winner) return
             updateStarCount(winner, "plus")
