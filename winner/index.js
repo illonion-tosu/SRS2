@@ -1,6 +1,6 @@
 let allTeams
 async function getTeams() {
-    const response = await fetch("../_data/beatmaps.json")
+    const response = await fetch("../_data/teams.json")
     const responseJson = await response.json()
     allTeams = responseJson
 }
