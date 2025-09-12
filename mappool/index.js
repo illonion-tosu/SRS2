@@ -440,7 +440,7 @@ const toggleAutopickEl = document.getElementById("toggle-autopick")
 let isAutopickOn = false
 function toggleAutopick() {
     isAutopickOn = !isAutopickOn
-    toggleAutopickEl.innerText = `Toggle Autopick: ${isAutopickOn? "ON" : "OFF"}`
+    toggleAutopickEl.innerText = `Autopick: ${isAutopickOn? "ON" : "OFF"}`
 }
 
 // Toggle Stars
@@ -469,7 +469,7 @@ function mappoolManagementSetAction() {
     mappoolManagementAction = mappoolManagementSetActionEl.value
     
     // Remove all other elements
-    while (mappoolManagementSystemEl.childElementCount > 3) {
+    while (mappoolManagementSystemEl.childElementCount > 2) {
         mappoolManagementSystemEl.lastChild.remove()
     }
 
