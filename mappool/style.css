@@ -276,7 +276,7 @@ video {
     position: absolute;
     left: 1920px;
     top: 0;
-    width: 500px;
+    width: 750px;
     height: 1080px;
     background-color: #FBE5DD;
     display: flex;
@@ -340,6 +340,9 @@ video {
     width: 2px;
     height: 1080px;
     background-color: black;
+}
+.divider-2 {
+    left: 499px;
 }
 /* Sidebar Select */
 .sidebar-select {

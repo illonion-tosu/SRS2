@@ -102,7 +102,7 @@ const leftTeamPickContainerEl = document.getElementById("left-team-pick-containe
 const rightTeamPickContainerEl = document.getElementById("right-team-pick-container")
 let currentPickTile, currentPickMap
 // Map Click Event
-function mapClickEvent(event) {
+async function mapClickEvent(event) {
     // Find map
     const currentMapId = this.dataset.id
     console.log(currentMapId)
@@ -156,6 +156,15 @@ function mapClickEvent(event) {
         this.dataset.pickTeam = "true"
 
         updateCurrentPicker()
+
+        // If map is picked
+        await delay(5600)
+        if (enableAutoAdvance && isStarOn) {
+            obsGetCurrentScene((currentScene) => {
+                if (currentScene.name === gameplay_scene_name) return
+                obsSetCurrentScene(gameplay_scene_name)
+            })
+        }
     }
 }
 
@@ -258,7 +267,7 @@ let chatLen = 0
 
 // Socket
 const socket = createTosuWsSocket()
-socket.onmessage = event => {
+socket.onmessage = async event => {
     const data = JSON.parse(event.data)
 
     // Teams
@@ -348,8 +357,33 @@ socket.onmessage = event => {
             if (!winner) return
             updateStarCount(winner, "plus")
 
+            // Delay 10 sedconds
+            await delay(15000)
+            if (enableAutoAdvance && isStarOn && (currentLeftStars === currentFirstTo || currentRightStars === currentFirstTo)) {
+                obsGetCurrentScene((currentScene) => {
+                    if (currentScene.name === winner_scene_name) return
+                    obsSetCurrentScene(winner_scene_name)
+                })
+            } else if (enableAutoAdvance && isStarOn) {
+                obsGetCurrentScene((currentScene) => {
+                    if (currentScene.name === mappool_scene_name) return
+                    obsSetCurrentScene(mappool_scene_name)
+                })
+            }
+
             // Set winner on tile
             if (!currentPickTile) return
+
+            if (winner === "red") {
+                currentPickTile
+            }
+        } else {
+            if (enableAutoAdvance && (ipcState === 2 || ipcState === 3)) {
+                obsGetCurrentScene((currentScene) => {
+                    if (currentScene.name === gameplay_scene_name) return
+                    obsSetCurrentScene(gameplay_scene_name)
+                })
+            }
         }
     }
 
@@ -912,3 +946,51 @@ function updateCurrentPicker(side) {
     nowPlayingTitleDifficultyEl.style.color = `var(--color-${side})`
     nowPlayingArtistEl.style.color = `var(--color-${side})`
 }
+
+// OBS Information
+const sceneCollection = document.getElementById("sceneCollection")
+let autoadvance_button = document.getElementById('auto-advance-button')
+let autoadvance_timer_label = document.getElementById('autoAdvanceTimerLabel')
+const pick_to_transition_delay_ms = 10000
+let enableAutoAdvance = false
+const gameplay_scene_name = "Gameplay"
+const mappool_scene_name = "Mappool"
+const winner_scene_name = "Winner"
+
+let sceneTransitionTimeoutID
+
+function switchAutoAdvance() {
+    enableAutoAdvance = !enableAutoAdvance
+    if (enableAutoAdvance) {
+        autoadvance_button.innerText = 'Auto Advance: ON'
+        autoadvance_button.classList.add("toggle-active")
+        autoadvance_button.classList.remove("toggle-inactive")
+    } else {
+        autoadvance_button.innerText = 'Auto Advance: OFF'
+        autoadvance_button.classList.remove("toggle-active")
+        autoadvance_button.classList.add("toggle-inactive")
+    }
+}
+
+const obsGetCurrentScene = window.obsstudio?.getCurrentScene ?? (() => {})
+const obsGetScenes = window.obsstudio?.getScenes ?? (() => {})
+const obsSetCurrentScene = window.obsstudio?.setCurrentScene ?? (() => {})
+
+obsGetScenes(scenes => {
+    for (const scene of scenes) {
+        let clone = document.getElementById("sceneButtonTemplate").content.cloneNode(true)
+        let buttonNode = clone.querySelector('button')
+        buttonNode.id = `scene__${scene}`
+        buttonNode.textContent = `GO TO: ${scene}`
+        buttonNode.onclick = function() { obsSetCurrentScene(scene); }
+        sceneCollection.appendChild(clone)
+    }
+
+    obsGetCurrentScene((scene) => { document.getElementById(`scene__${scene.name}`).classList.add("active-scene") })
+})
+
+window.addEventListener('obsSceneChanged', function(event) {
+    let activeButton = document.getElementById(`scene__${event.detail.name}`)
+    for (const scene of sceneCollection.children) { scene.classList.remove("toggle-active") }
+    activeButton.classList.add("toggle-active")
+})
