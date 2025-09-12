@@ -47,7 +47,7 @@
 
         <!-- Now Playing Section -->
         <div class="now-playing">
-            <img src="static/now-playing/left-now-playing-background.png">
+            <img id="now-playing-background" src="static/now-playing/left-now-playing-background.png">
             <div class="now-playing-banner" id="now-playing-banner"></div>
             <div class="now-playing-metadata now-playing-title-difficulty" id="now-playing-title-difficulty">SONG TITLE (DIFFICULTY)</div>
             <div class="now-playing-metadata now-playing-artist" id="now-playing-artist">ARTIST</div>
@@ -75,17 +75,17 @@
                 <div class="sidebar-button-container">
                     <button onclick="updateStarCount('red','minus')">Red --</button>
                     <button onclick="updateStarCount('red','plus')">Red ++</button>
-                    <button onclick="updateStarCount('blue','minus')">Blue --</button>
-                    <button onclick="updateStarCount('blue','plus')">Blue ++</button>
+                    <button onclick="updateStarCount('blue','minus')">Green --</button>
+                    <button onclick="updateStarCount('blue','plus')">Green ++</button>
                 </div>
             </div>
             <div class="sidebar-section">
                 <div class="sidebar-title">Mappool</div>
                 <div class="sidebar-text">
                     Left Click (LC) = Red Pick<br>
-                    Right Click (RC) = Blue Pick<br>
+                    Right Click (RC) = Green Pick<br>
                     Ctrl + LC = Red Ban<br>
-                    Ctrl + RC = Blue Ban
+                    Ctrl + RC = Green Ban
                  </div>
                 <div class="sidebar-button-container" id="sidebar-mappool-container"></div>
             </div>
@@ -93,8 +93,8 @@
                 <div class="sidebar-title">Next Picker</div>
                 <div class="sidebar-text" id="next-auto-picker-team"></div>
                 <div class="sidebar-button-container">
-                    <button onclick="updateNextAutoPicker('red')">Left</button>
-                    <button onclick="updateNextAutoPicker('blue')">Right</button>
+                    <button onclick="updateNextAutoPicker('red')">Red</button>
+                    <button onclick="updateNextAutoPicker('blue')">Green</button>
                     <button onclick="toggleAutopick()" class="full-length-button" id="toggle-autopick">Toggle Autopick: OFF</button>
                 </div>
             </div>
@@ -105,6 +105,13 @@
                 <div class="sidebar-title">Set Star Status</div>
                 <div class="sidebar-button-container">
                     <button onclick="toggleStars()" class="full-length-button"  id="toggle-stars">Toggle Stars: ON</button>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-title">Set Current Picker:</div>
+                <div class="sidebar-button-container">
+                    <button onclick="updateCurrentPicker('left')">Red</button>
+                    <button onclick="updateCurrentPicker('right')">Green</button>
                 </div>
             </div>
             <div class="sidebar-section" id="mappool-management-system">

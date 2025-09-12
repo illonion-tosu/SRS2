@@ -268,7 +268,7 @@ socket.onmessage = event => {
         // This is also mostly taken from Victim Crasher: https://github.com/VictimCrasher/static/tree/master/WaveTournament
     if (chatLen !== data.tourney.chat.length) {
         (chatLen === 0 || chatLen > data.tourney.chat.length) ? (messagesContainerEl.innerHTML = "", chatLen = 0) : null
-        
+
         const fragment = document.createDocumentFragment()
         for (let i = chatLen; i < data.tourney.chat.length; i++) {
             // Chat message container
@@ -480,9 +480,9 @@ function mappoolManagementSetAction() {
         }
         for (i = 0; i < currentRightBanNumberTotal; i++) {
             const mappoolManagementWhoseBanOption = document.createElement("option")
-            mappoolManagementWhoseBanOption.setAttribute("value", `blue|${i}`)
-            if (i < rightTeamBanContainerEl.childElementCount) mappoolManagementWhoseBanOption.innerText = `Blue Ban ${i + 1} - ${rightTeamBanContainerEl.children[i].innerText}`
-            else mappoolManagementWhoseBanOption.innerText = `Blue Ban ${i + 1}`
+            mappoolManagementWhoseBanOption.setAttribute("value", `green|${i}`)
+            if (i < rightTeamBanContainerEl.childElementCount) mappoolManagementWhoseBanOption.innerText = `Green Ban ${i + 1} - ${rightTeamBanContainerEl.children[i].innerText}`
+            else mappoolManagementWhoseBanOption.innerText = `Green Ban ${i + 1}`
 
             mappoolManagementWhoseBanSelect.append(mappoolManagementWhoseBanOption)
         }
@@ -536,9 +536,9 @@ function mappoolManagementSetAction() {
         }
         for (i = 0; i < rightTeamPickContainerEl.childElementCount; i++) {
             const mappoolManagementWhosePickOption = document.createElement("option")
-            mappoolManagementWhosePickOption.setAttribute("value", `blue|${i}`)
-            if (rightTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Blue Pick ${i + 1} - ${rightTeamPickContainerEl.children[i].children[1].children[0].innerText}`
-            else mappoolManagementWhosePickOption.innerText = `Blue Pick ${i + 1}`
+            mappoolManagementWhosePickOption.setAttribute("value", `green|${i}`)
+            if (rightTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Green Pick ${i + 1} - ${rightTeamPickContainerEl.children[i].children[1].children[0].innerText}`
+            else mappoolManagementWhosePickOption.innerText = `Green Pick ${i + 1}`
 
             mappoolManagementWhosePickSelect.append(mappoolManagementWhosePickOption)
         }
@@ -591,9 +591,9 @@ function mappoolManagementSetAction() {
         }
         for (i = 0; i < rightTeamPickContainerEl.childElementCount; i++) {
             const mappoolManagementWhosePickOption = document.createElement("option")
-            mappoolManagementWhosePickOption.setAttribute("value", `blue|${i}`)
-            if (rightTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Blue Pick ${i + 1} - ${rightTeamPickContainerEl.children[i].children[1].children[0].innerText}`
-            else mappoolManagementWhosePickOption.innerText = `Blue Pick ${i + 1}`
+            mappoolManagementWhosePickOption.setAttribute("value", `green|${i}`)
+            if (rightTeamPickContainerEl.children[i].hasAttribute("data-id")) mappoolManagementWhosePickOption.innerText = `Green Pick ${i + 1} - ${rightTeamPickContainerEl.children[i].children[1].children[0].innerText}`
+            else mappoolManagementWhosePickOption.innerText = `Green Pick ${i + 1}`
 
             mappoolManagementWhosePickSelect.append(mappoolManagementWhosePickOption)
         }
@@ -616,8 +616,8 @@ function mappoolManagementSetAction() {
             mappoolManagementWhichTeamOptionOne.setAttribute("value", "red")
             mappoolManagementWhichTeamOptionOne.innerText = "Red"
             const mappoolManagementWhichTeamOptionTwo = document.createElement("option")
-            mappoolManagementWhichTeamOptionTwo.setAttribute("value", "blue")
-            mappoolManagementWhichTeamOptionTwo.innerText = "Blue"
+            mappoolManagementWhichTeamOptionTwo.setAttribute("value", "green")
+            mappoolManagementWhichTeamOptionTwo.innerText = "Green"
 
             mappoolManagementWhichTeamContainer.append(mappoolManagementWhichTeamOptionOne, mappoolManagementWhichTeamOptionTwo)
 
@@ -892,4 +892,16 @@ function mappoolManagementRemoveWinner() {
     currentTile.children[0].style.opacity = 1
     currentTile.children[1].classList.remove(`${mappoolManagementSetWhosePickTeam === "red" ? "right" : "left"}-team-pick-bottom-section`)
     currentTile.children[1].classList.add(`${mappoolManagementSetWhosePickTeam === "red" ? "left" : "right"}-team-pick-bottom-section`)
+}
+
+// Update star count
+const nowPlayingBackgroundEl = document.getElementById("now-playing-background")
+let currentPicker
+function updateCurrentPicker(side) {
+    currentPicker = side
+    document.cookie = `currentPicker=${side}; path=/`
+
+    nowPlayingBackgroundEl.setAttribute("src", `static/now-playing/${side}-now-playing-background.png`)
+    nowPlayingTitleDifficultyEl.style.color = `var(--color-${side})`
+    nowPlayingArtistEl.style.color = `var(--color-${side})`
 }
