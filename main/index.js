@@ -188,12 +188,12 @@ socket.onmessage = event => {
 
 // Get Stats
 function getStats(sr, ar, cs, hp, bpm, len, mod) {
-    if (currentMappoolBeatmap.mod.includes("HR") || (currentMappoolBeatmap.mod.includes("BS") && currentMappoolBeatmap.second_mod.includes("HR"))) {
+    if (currentMappoolBeatmap.mod.includes("HR") || (currentMappoolBeatmap.mod.includes("BM") && currentMappoolBeatmap.second_mod.includes("HR"))) {
         cs = Math.min(Math.round(cs * 1.3 * 10) / 10, 10)
         ar = Math.min(Math.round(ar * 1.4 * 10) / 10, 10)
         hp = Math.min(Math.round(hp * 1.4 * 10) / 10, 10)
     }
-    if (currentMappoolBeatmap.mod.includes("DT")  || (currentMappoolBeatmap.mod.includes("BS") && currentMappoolBeatmap.second_mod.includes("DT"))) {
+    if (currentMappoolBeatmap.mod.includes("DT")  || (currentMappoolBeatmap.mod.includes("BM") && currentMappoolBeatmap.second_mod.includes("DT"))) {
         if (ar > 5) ar = Math.round((((1200 - (( 1200 - (ar - 5) * 150) * 2 / 3)) / 150) + 5) * 10) / 10
         else ar = Math.round((1800 - ((1800 - ar * 120) * 2 / 3)) / 120 * 10) / 10
         if (hp > 5) hp = Math.round((((1200 - (( 1200 - (hp - 5) * 150) * 2 / 3)) / 150) + 5) * 10) / 10
@@ -212,6 +212,7 @@ setInterval(() => {
     // Set current picker
     const currentPicker = getCookie("currentPicker")
     if (previousPicker !== currentPicker) {
+        if (currentPicker === "") currentPicker === "left"
         previousPicker = currentPicker
         nowPlayingBackgroundEl.setAttribute("src", `static/now-playing/${currentPicker}-now-playing-background.png`)
         nowPlayingTitleDifficultyEl.style.color = `var(--color-${currentPicker})`

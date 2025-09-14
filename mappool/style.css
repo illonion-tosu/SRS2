@@ -252,6 +252,7 @@ video {
     display: flex;
     justify-content: flex-end;
     flex-direction: column;
+    overflow: hidden;
 }
 .message-container {
     display: flex;
