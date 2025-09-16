@@ -150,12 +150,10 @@ async function mapClickEvent(event) {
         currentTile.children[1].style.display = "block"
         currentTile.children[1].children[0].innerText = `${currentMap.mod}${currentMap.order}`
 
-        document.cookie = `currentPicker=${team}; path=/`
+        document.cookie = `currentPicker=${team === "red" ? "left" : "right"}; path=/`
         currentPickMap = currentMap
 
         this.dataset.pickTeam = "true"
-
-        updateCurrentPicker(team === "red" ? "left" : "right")
 
         // If map is picked
         await delay(5600)
@@ -897,3 +895,6 @@ window.addEventListener('obsSceneChanged', function(event) {
     for (const scene of sceneCollection.children) { scene.classList.remove("toggle-active") }
     activeButton.classList.add("toggle-active")
 })
+
+// Update current picker
+function updateCurrentPicker(side) { document.cookie = `currentPicker=${side}; path=/` }

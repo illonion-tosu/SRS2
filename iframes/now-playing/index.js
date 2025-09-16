@@ -80,4 +80,4 @@ setInterval(() => {
         nowPlayingTitleDifficultyEl.style.color = `var(--color-${currentPicker})`
         nowPlayingArtistEl.style.color = `var(--color-${currentPicker})`
     }
-})
+}, 200)
