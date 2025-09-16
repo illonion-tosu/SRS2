@@ -1,0 +1,47 @@
+/* Chat Display */
+.chat-display {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #FFA09D;
+    width: 700px;
+    height: 175px;
+    border-radius: 25px;
+    font-family: "Fredoka";
+    font-weight: 500;
+    opacity: 1;
+    transition: 500ms ease-in-out;
+}
+/* Messages Container */
+.messages-container {
+    --margin: 10px;
+    position: absolute;
+    top: var(--margin);
+    left: calc(var(--margin) * 2);
+    width: calc(100% - var(--margin) * 4);
+    height: calc(100% - var(--margin) * 2);
+    font-size: 1.25em;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    overflow: hidden;
+    scroll-behavior: smooth;
+}
+.message-container {
+    display: flex;
+    gap: 10px;
+}
+.message-name {
+    font-weight: 700;
+    min-width: 100px;
+    width: max-content;
+    max-width: 210px;
+}
+.message-content {
+    width: 440px;
+}
+.bot { color: darkmagenta; }
+.unknown { color: darkblue; }
+.left { color: #FC2F44; }
+.right { color: darkgreen; }

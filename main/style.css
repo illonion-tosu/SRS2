@@ -89,12 +89,3 @@
     font-weight: 600;
     font-size: 2.5em;
 }
-
-/* Now Playing */
-#now-playing {
-    width: 1920px;
-    height: 1080px;
-    background-color: transparent;
-    overflow: hidden;
-    border: none;
-}
