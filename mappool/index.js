@@ -105,9 +105,7 @@ let currentPickTile, currentPickMap
 async function mapClickEvent(event) {
     // Find map
     const currentMapId = this.dataset.id
-    console.log(currentMapId)
     const currentMap = findBeatmaps(currentMapId)
-    console.log(currentMap)
     if (!currentMap) return
 
     // Team
@@ -155,7 +153,7 @@ async function mapClickEvent(event) {
 
         this.dataset.pickTeam = "true"
 
-        updateCurrentPicker()
+        updateCurrentPicker(team === "red" ? "left" : "right")
 
         // If map is picked
         await delay(5600)
@@ -946,6 +944,7 @@ function updateCurrentPicker(side) {
     nowPlayingTitleDifficultyEl.style.color = `var(--color-${side})`
     nowPlayingArtistEl.style.color = `var(--color-${side})`
 }
+updateCurrentPicker("left")
 
 // OBS Information
 const sceneCollection = document.getElementById("sceneCollection")
@@ -994,3 +993,21 @@ window.addEventListener('obsSceneChanged', function(event) {
     for (const scene of sceneCollection.children) { scene.classList.remove("toggle-active") }
     activeButton.classList.add("toggle-active")
 })
+
+// Get Stats
+function getStats(sr, ar, cs, hp, bpm, len, mod) {
+    if (currentMappoolBeatmap.mod.includes("HR") || (currentMappoolBeatmap.mod.includes("BM") && currentMappoolBeatmap.second_mod.includes("HR"))) {
+        cs = Math.min(Math.round(cs * 1.3 * 10) / 10, 10)
+        ar = Math.min(Math.round(ar * 1.4 * 10) / 10, 10)
+        hp = Math.min(Math.round(hp * 1.4 * 10) / 10, 10)
+    }
+    if (currentMappoolBeatmap.mod.includes("DT")  || (currentMappoolBeatmap.mod.includes("BM") && currentMappoolBeatmap.second_mod.includes("DT"))) {
+        if (ar > 5) ar = Math.round((((1200 - (( 1200 - (ar - 5) * 150) * 2 / 3)) / 150) + 5) * 10) / 10
+        else ar = Math.round((1800 - ((1800 - ar * 120) * 2 / 3)) / 120 * 10) / 10
+        if (hp > 5) hp = Math.round((((1200 - (( 1200 - (hp - 5) * 150) * 2 / 3)) / 150) + 5) * 10) / 10
+        else hp = Math.round((1800 - ((1800 - hp * 120) * 2 / 3)) / 120 * 10) / 10
+        bpm = Math.round(bpm * 1.5)
+        len = Math.round(len / 1.5)
+    }
+    return {sr: sr, ar: ar, cs: cs, hp: hp, bpm: bpm, len: len, mod: mod}
+}
