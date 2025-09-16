@@ -1,0 +1,64 @@
+
+
+:root {
+    --now-playing-metadata-horizontal-alignment: 16px;
+    --color-left: #FF6A66;
+    --color-right: #9cce00;
+}
+
+/* Now Playing */
+.now-playing {
+    position: absolute;
+    bottom: 1px;
+    left: 10px;
+    width: 407px;
+    height: 179px;
+}
+/* Now Playing Banner */
+.now-playing-banner {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 381px;
+    height: 45px;
+    background-image: url("https://assets.ppy.sh/beatmaps/1075017/covers/cover.jpg");
+    border-radius: 3px;
+    background-size: cover;
+    background-position: center;
+}
+/* Metadata */
+.now-playing-metadata {
+    position: absolute;
+    left: var(--now-playing-metadata-horizontal-alignment);
+    font-family: "Fredoka";
+    font-weight: 600;
+    width: 375px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--color-left);
+}
+/* Song Title + Difficulty */
+.now-playing-title-difficulty {
+    position: absolute;
+    top: 57px;
+    font-size: 1.4em;
+}
+.now-playing-artist {
+    position: absolute;
+    top: 82px;
+    font-size: 1.15em;
+}
+.now-playing-stats-container {
+    position: absolute;
+    top: 104px;
+    left: var(--now-playing-metadata-horizontal-alignment);
+    font-family: "Fredoka";
+    font-weight: 500;
+    font-size: 1.05em;
+    display: flex;
+    flex-wrap: wrap;
+    font-variant-numeric: tabular-nums;
+}
+.now-playing-stat { width: 112px; }

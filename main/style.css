@@ -4,7 +4,6 @@
     --star-container-horizontal-alignment: 134px;
     --color-left: #FF6A66;
     --color-right: #9cce00;
-    --now-playing-metadata-horizontal-alignment: 16px;
     --current-score-horizontal-alignment: 1150px;
 }
 
@@ -89,4 +88,13 @@
     font-family: "Fredoka";
     font-weight: 600;
     font-size: 2.5em;
+}
+
+/* Now Playing */
+#now-playing {
+    width: 1920px;
+    height: 1080px;
+    background-color: transparent;
+    overflow: hidden;
+    border: none;
 }
