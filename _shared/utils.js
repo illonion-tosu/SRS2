@@ -69,7 +69,7 @@ function setLengthDisplay(seconds) {
 
 // Get Stats
 function getStats(sr, ar, cs, hp, bpm, len, mod, secondMod) {
-    if (modmod.includes("HR") || (mod.includes("BM") && secondMod.includes("HR"))) {
+    if (mod.includes("HR") || (mod.includes("BM") && secondMod.includes("HR"))) {
         cs = Math.min(Math.round(cs * 1.3 * 10) / 10, 10)
         ar = Math.min(Math.round(ar * 1.4 * 10) / 10, 10)
         hp = Math.min(Math.round(hp * 1.4 * 10) / 10, 10)
